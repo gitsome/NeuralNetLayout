@@ -16,7 +16,7 @@ var NeuralNetworkLayer;
         var defaults = {
             nodes: 1
         };
-        _.assign(that, defaults, configs);
+        _.extend(that, defaults, configs);
 
 
         /*============ PRIVATE VARIABLES METHODS ============*/
@@ -32,7 +32,7 @@ var NeuralNetworkLayer;
                 type: 'fullyConnected',
                 color: '#444'
             };
-            var configs = _.assign({}, defaultConnectionConfigs, configs_in);
+            var configs = _.extend({}, defaultConnectionConfigs, configs_in);
 
 
 

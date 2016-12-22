@@ -1,0 +1,23 @@
+{
+  "name": "neural_network_layout",
+  "version": "1.0.0",
+  "description": "Wrapping Dagre D3 with convenience methods for visualizing neural networks",
+  "main": "index.js",
+  "dependencies": {
+    "dagre-d3": "^0.4.17"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitsome/NeuralNetLayout.git"
+  },
+  "author": "John David Martin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gitsome/NeuralNetLayout/issues"
+  },
+  "homepage": "https://github.com/gitsome/NeuralNetLayout#readme"
+}

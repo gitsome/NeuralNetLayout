@@ -24,7 +24,8 @@ var startDemo;
 
         var track1_hidden1Relu = singleHiddenNetwork.createLayer({
             nodes: 4,
-            id: 'track1_hidden_1_relu'
+            id: 'track1_hidden_1_relu',
+            type: 'activation'
         });
 
         var track1_hidden2 = singleHiddenNetwork.createLayer({
@@ -34,7 +35,8 @@ var startDemo;
 
         var track1_hidden2Relu = singleHiddenNetwork.createLayer({
             nodes: 4,
-            id: 'track1_hidden_2_relu'
+            id: 'track1_hidden_2_relu',
+            type: 'activation'
         });
 
 

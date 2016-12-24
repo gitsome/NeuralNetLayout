@@ -37,7 +37,10 @@ var NeuralNetworkLayer;
 
         var initialize = function () {
             for (var i=0; i < that.nodes; i++) {
-                graph.setNode(getNodeId(i), {label: " ", shape: "circle"});
+                graph.setNode(getNodeId(i), {
+                    label: " ",
+                    shape: that.type === 'activation' ? "rect" : "circle"
+                });
             }
         };
 
@@ -54,6 +57,8 @@ var NeuralNetworkLayer;
             };
             _.extend(that, defaultConnectionConfigs, configs_in);
 
+
+            var connectToOptions;
             if (that.type === 'direct') {
 
                 if (that.nodes !== layerIn.nodes) {
@@ -61,14 +66,22 @@ var NeuralNetworkLayer;
                 }
 
                 for (var i=0; i < that.nodes; i++) {
-                    graph.setEdge(that.getNodeId(i), layerIn.getNodeId(i), {arrowhead:'normal'});
+
+                    graph.setEdge(that.getNodeId(i), layerIn.getNodeId(i), {
+                        arrowhead: 'normal',
+                        lineInterpolate: 'basis'
+                    });
                 }
 
             } else if (that.type === 'fullyConnected') {
 
                 for (var i=0; i < that.nodes; i++) {
                     for (var j=0; j < layerIn.nodes; j++) {
-                        graph.setEdge(that.getNodeId(i), layerIn.getNodeId(j),  {arrowhead:'normal'});
+
+                        graph.setEdge(that.getNodeId(i), layerIn.getNodeId(j), {
+                            arrowhead: 'normal',
+                            lineInterpolate: 'basis'
+                        });
                     }
                 }
 

@@ -19,7 +19,8 @@ var startDemo;
 
         var hidden1Relu = singleHiddenNetwork.createLayer({
             nodes: 4,
-            id: 'hidden_1_relu'
+            id: 'hidden_1_relu',
+            type: 'activation'
         });
 
         var hidden2 = singleHiddenNetwork.createLayer({
@@ -29,7 +30,8 @@ var startDemo;
 
         var hidden2Relu = singleHiddenNetwork.createLayer({
             nodes: 4,
-            id: 'hidden_2_relu'
+            id: 'hidden_2_relu',
+            type: 'activation'
         });
 
         var softmax = singleHiddenNetwork.createLayer({

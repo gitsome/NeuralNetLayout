@@ -9,7 +9,8 @@ var startDemo;
 
         var inputLayer = singleHiddenNetwork.createLayer({
             nodes: 4,
-            id: 'input'
+            id: 'input',
+            type: 'input'
         });
 
         var hidden1 = singleHiddenNetwork.createLayer({
@@ -41,7 +42,8 @@ var startDemo;
 
         var output = singleHiddenNetwork.createLayer({
             nodes: 2,
-            id: 'output'
+            id: 'output',
+            type: 'output'
         });
 
 

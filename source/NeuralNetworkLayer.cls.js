@@ -31,6 +31,12 @@ var NeuralNetworkLayer;
 
         /*============ PRIVATE VARIABLES METHODS ============*/
 
+        var layerTypeShapeMap = {
+            'activation': 'rect',
+            'input': 'diamond',
+            'output': 'diamond'
+        };
+
         var getNodeId = function (ind) {
             return that.id + '-' + ind;
         };
@@ -39,7 +45,7 @@ var NeuralNetworkLayer;
             for (var i=0; i < that.nodes; i++) {
                 graph.setNode(getNodeId(i), {
                     label: " ",
-                    shape: that.type === 'activation' ? "rect" : "circle"
+                    shape: layerTypeShapeMap[that.type] ? layerTypeShapeMap[that.type] : "circle"
                 });
             }
         };

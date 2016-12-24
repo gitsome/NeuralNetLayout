@@ -9,7 +9,8 @@ var startDemo;
 
         var inputLayer = singleHiddenNetwork.createLayer({
             nodes: 4,
-            id: 'input'
+            id: 'input',
+            type: 'input'
         });
 
         var track1_staging = singleHiddenNetwork.createLayer({
@@ -53,13 +54,12 @@ var startDemo;
 
         var output = singleHiddenNetwork.createLayer({
             nodes: 2,
-            id: 'output'
+            id: 'output',
+            type: 'output'
         });
 
 
         /*============ TRACK ONE ============*/
-
-
 
         inputLayer.connectToLayer(track1_staging, {
             type: 'direct'

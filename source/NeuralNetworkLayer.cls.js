@@ -5,6 +5,12 @@ var NeuralNetworkLayer;
 
     /*============ PRIVATE STATIC VARIABLES/METHODS ============*/
 
+    var layerId = 0;
+
+    var getNextLayerId = function () {
+        return layerId++;
+    };
+
 
     /*============ CLASS ============*/
 
@@ -14,15 +20,11 @@ var NeuralNetworkLayer;
 
         var that = this;
         var defaults = {
-            id: false,
+            id: getNextLayerId(),
             type: 'node',
             nodes: 1
         };
         _.extend(that, defaults, configs);
-
-        if (!that.id) {
-            throw new Error('NeuralNetworkLayer.connectToLayer.initializedWithNoId');
-        }
 
         if (!that.nodes) {
             throw new Error('NeuralNetworkLayer.connectToLayer.initializedWithNoNodes');
@@ -50,6 +52,23 @@ var NeuralNetworkLayer;
             }
         };
 
+        var layerTypeToEdgeTypeMap = {
+            'fullyConnected': 'weighted',
+            'activation': 'activation',
+            'direct': 'normal'
+        };
+
+        var edgeStyleMap = {
+            'activation': 'stroke: #f0ad4e; stroke-width: 2px; fill:none;',
+            'weighted': 'stroke: #5cb85c; stroke-width: 2px; fill:none;',
+            'normal': 'stroke: #333; stroke-width: 1px; fill:none;',
+            'passThrough': 'stroke: #666; stroke-width: 2px; stroke-dasharray: 5, 5; fill:none;'
+        };
+
+        var getStyle = function (edgeStyle) {
+            return edgeStyleMap[edgeStyle];
+        };
+
 
         /*============ PUBLIC PROPERTIES AND METHODS ============*/
 
@@ -59,13 +78,14 @@ var NeuralNetworkLayer;
 
             var defaultConnectionConfigs = {
                 type: 'fullyConnected',
+                edgeType: 'normal',
                 color: '#444'
             };
-            _.extend(that, defaultConnectionConfigs, configs_in);
+            var connectConfigs = _.extend({}, defaultConnectionConfigs, configs_in);
 
 
             var connectToOptions;
-            if (that.type === 'direct') {
+            if (connectConfigs.type === 'direct') {
 
                 if (that.nodes !== layerIn.nodes) {
                     throw new Error('NeuralNetworkLayer.connectToLayer.mismatchedLayerSizesForDirectConnection');
@@ -75,17 +95,21 @@ var NeuralNetworkLayer;
 
                     graph.setEdge(that.getNodeId(i), layerIn.getNodeId(i), {
                         arrowhead: 'normal',
+                        arrowheadStyle: "stroke-width:1px; stroke: #333; fill:#333;",
+                        style: getStyle(connectConfigs.edgeType),
                         lineInterpolate: 'basis'
                     });
                 }
 
-            } else if (that.type === 'fullyConnected') {
+            } else if (connectConfigs.type === 'fullyConnected') {
 
                 for (var i=0; i < that.nodes; i++) {
                     for (var j=0; j < layerIn.nodes; j++) {
 
                         graph.setEdge(that.getNodeId(i), layerIn.getNodeId(j), {
                             arrowhead: 'normal',
+                            arrowheadStyle: "stroke-width:1px; stroke: #333; fill:#333;",
+                            style: getStyle(connectConfigs.edgeType),
                             lineInterpolate: 'basis'
                         });
                     }

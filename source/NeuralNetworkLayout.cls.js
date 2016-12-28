@@ -19,7 +19,7 @@ var NeuralNetworkLayout;
 
         /*============ PRIVATE VARIABLES METHODS ============*/
 
-        var graph = new dagreD3.graphlib.Graph().setGraph({nodesep:30, ranksep:80});
+        var graph = new dagreD3.graphlib.Graph().setGraph({nodesep:30, ranksep:80, rankdir: 'LR'});
 
         var layers = [];
 

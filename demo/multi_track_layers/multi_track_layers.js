@@ -34,7 +34,7 @@ var startDemo;
 
         var trackCombine = singleHiddenNetwork.createLayer({nodes: 2 });
 
-        var softmax = singleHiddenNetwork.createLayer({nodes: 2, type: 'activation' });
+        var softmax = singleHiddenNetwork.createLayer({nodes: 1, type: 'activation' });
 
         var output = singleHiddenNetwork.createLayer({nodes: 2, type: 'output' });
 
@@ -103,12 +103,12 @@ var startDemo;
         /*============ OUTPUT ============*/
 
         trackCombine.connectToLayer(softmax, {
-            type: 'direct',
+            type: 'fullyConnected',
             edgeType: 'activation'
         });
 
         softmax.connectToLayer(output, {
-            type: 'direct',
+            type: 'fullyConnected',
             edgeType: 'activation'
         });
 

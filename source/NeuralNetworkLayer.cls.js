@@ -7,8 +7,24 @@ var NeuralNetworkLayer;
 
     var layerId = 0;
 
+    var sortRank = 0;
+    var getNextSortRank = function () {
+        return sortRank++;
+    };
+
     var getNextLayerId = function () {
         return layerId++;
+    };
+
+    var getNodeStyle = function () {
+
+        var that = this;
+
+        if (that.type === 'input' || that.type === 'oupute') {
+            return "stroke: #5cb85c;";
+        } else {
+            return "";
+        }
     };
 
 
@@ -44,10 +60,15 @@ var NeuralNetworkLayer;
         };
 
         var initialize = function () {
+
+            var layerRank = getNextSortRank();
+
             for (var i=0; i < that.nodes; i++) {
                 graph.setNode(getNodeId(i), {
                     label: " ",
-                    shape: layerTypeShapeMap[that.type] ? layerTypeShapeMap[that.type] : "circle"
+                    shape: layerTypeShapeMap[that.type] ? layerTypeShapeMap[that.type] : "circle",
+                    getNodeStyle: getNodeStyle.call(that),
+                    sortRank: layerRank
                 });
             }
         };
@@ -83,6 +104,7 @@ var NeuralNetworkLayer;
             };
             var connectConfigs = _.extend({}, defaultConnectionConfigs, configs_in);
 
+            var layerRank = getNextSortRank();
 
             var connectToOptions;
             if (connectConfigs.type === 'direct') {
@@ -97,7 +119,8 @@ var NeuralNetworkLayer;
                         arrowhead: 'normal',
                         arrowheadStyle: "stroke-width:1px; stroke: #333; fill:#333;",
                         style: getStyle(connectConfigs.edgeType),
-                        lineInterpolate: 'basis'
+                        lineInterpolate: 'basis',
+                        sortRank: layerRank
                     });
                 }
 
@@ -110,7 +133,8 @@ var NeuralNetworkLayer;
                             arrowhead: 'normal',
                             arrowheadStyle: "stroke-width:1px; stroke: #333; fill:#333;",
                             style: getStyle(connectConfigs.edgeType),
-                            lineInterpolate: 'basis'
+                            lineInterpolate: 'basis',
+                            sortRank: layerRank
                         });
                     }
                 }

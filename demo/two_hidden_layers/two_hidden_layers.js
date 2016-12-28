@@ -51,7 +51,7 @@ var startDemo;
         });
 
         var softmax = singleHiddenNetwork.createLayer({
-            nodes: 2,
+            nodes: 1,
             id: 'softmax',
             type: 'activation'
         });
@@ -99,13 +99,13 @@ var startDemo;
         });
 
         hiddenLinearOut.connectToLayer(softmax, {
-            type: 'direct',
+            type: 'fullyConnected',
             edgeType: 'activation'
         });
 
 
         softmax.connectToLayer(output, {
-            type: 'direct',
+            type: 'fullyConnected',
             edgeType: 'activation'
         });
 

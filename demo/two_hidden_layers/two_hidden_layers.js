@@ -5,70 +5,67 @@ var startDemo;
 
     startDemo = function () {
 
+        /*============ LAYERS ============*/
+
         var singleHiddenNetwork = new NeuralNetworkLayout({});
 
-        var inputLayer = singleHiddenNetwork.createLayer({
-            nodes: 3,
-            id: 'input',
-            type: 'input'
-        });
+        var inputLayer = singleHiddenNetwork.createLayer({nodes: 3, type: 'input'});
 
-        var hidden1 = singleHiddenNetwork.createLayer({
-            nodes: 3,
-            id: 'hidden_1'
-        });
 
-        var hidden1Relu = singleHiddenNetwork.createLayer({
-            nodes: 3,
-            id: 'hidden_1_relu',
-            type: 'activation'
-        });
+        var hidden1 = singleHiddenNetwork.createLayer({nodes: 3});
 
-        var hidden1ReluOut = singleHiddenNetwork.createLayer({
-            nodes: 3,
-            id: 'hidden_1_relu_out'
-        });
+        var hidden1Bias = singleHiddenNetwork.createLayer({nodes: 3, type: 'bias'});
 
-        var hidden2 = singleHiddenNetwork.createLayer({
-            nodes: 3,
-            id: 'hidden_2'
-        });
+        var hidden1Out = singleHiddenNetwork.createLayer({nodes: 3});
 
-        var hidden2Relu = singleHiddenNetwork.createLayer({
-            nodes: 3,
-            id: 'hidden_2_relu',
-            type: 'activation'
-        });
+        var hidden1Relu = singleHiddenNetwork.createLayer({nodes: 3, type: 'activation', label: 'RELU'});
 
-        var hidden2ReluOut = singleHiddenNetwork.createLayer({
-            nodes: 3,
-            id: 'hidden_2_relu_out'
-        });
+        var hidden1ReluOut = singleHiddenNetwork.createLayer({nodes: 3});
 
-        var hiddenLinearOut = singleHiddenNetwork.createLayer({
-            nodes: 2,
-            id: 'hidden_linear_out'
-        });
 
-        var softmax = singleHiddenNetwork.createLayer({
-            nodes: 1,
-            id: 'softmax',
-            type: 'activation'
-        });
+        var hidden2 = singleHiddenNetwork.createLayer({nodes: 3});
 
-        var output = singleHiddenNetwork.createLayer({
-            nodes: 2,
-            id: 'output',
-            type: 'output'
-        });
+        var hidden2Out = singleHiddenNetwork.createLayer({nodes: 3});
 
+        var hidden2Bias = singleHiddenNetwork.createLayer({nodes: 3, type: 'bias'});
+
+        var hidden2Relu = singleHiddenNetwork.createLayer({nodes: 3, type: 'activation', label: 'RELU'});
+
+        var hidden2ReluOut = singleHiddenNetwork.createLayer({nodes: 3});
+
+
+        var hiddenLinear = singleHiddenNetwork.createLayer({nodes: 2});
+
+        var hiddenLinearBias = singleHiddenNetwork.createLayer({nodes: 2, type: 'bias'});
+
+        var hiddenLinearOut = singleHiddenNetwork.createLayer({nodes: 2});
+
+
+        var softmax = singleHiddenNetwork.createLayer({nodes: 1, type: 'activation', label: 'SOFTMAX'});
+
+        var output = singleHiddenNetwork.createLayer({nodes: 2, type: 'output'});
+
+
+        /*============ CONNECTIONS ============*/
 
         inputLayer.connectToLayer(hidden1, {
             type: 'fullyConnected',
             edgeType: 'weighted'
         });
 
-        hidden1.connectToLayer(hidden1Relu, {
+
+        hidden1.connectToLayer(hidden1Out, {
+            type: 'direct',
+            edgeType: 'normal'
+        });
+
+        hidden1Bias.connectToLayer(hidden1Out, {
+            type: 'direct',
+            edgeType: 'bias',
+            lineInterpolate: 'normal'
+        });
+
+        hidden1Out.connectToLayer(hidden1Relu, {
             type: 'direct',
             edgeType: 'activation'
         });
@@ -83,7 +80,19 @@ var startDemo;
             edgeType: 'weighted'
         });
 
-        hidden2.connectToLayer(hidden2Relu, {
+
+        hidden2.connectToLayer(hidden2Out, {
+            type: 'direct',
+            edgeType: 'normal'
+        });
+
+        hidden2Bias.connectToLayer(hidden2Out, {
+            type: 'direct',
+            edgeType: 'bias',
+            lineInterpolate: 'normal'
+        });
+
+        hidden2Out.connectToLayer(hidden2Relu, {
             type: 'direct',
             edgeType: 'activation'
         });
@@ -93,9 +102,21 @@ var startDemo;
             edgeType: 'activation'
         });
 
-        hidden2ReluOut.connectToLayer(hiddenLinearOut, {
+        hidden2ReluOut.connectToLayer(hiddenLinear, {
             type: 'fullyConnected',
             edgeType: 'weighted'
+        });
+
+
+        hiddenLinear.connectToLayer(hiddenLinearOut, {
+            type: 'direct',
+            edgeType: 'normal'
+        });
+
+        hiddenLinearBias.connectToLayer(hiddenLinearOut, {
+            type: 'direct',
+            edgeType: 'bias',
+            lineInterpolate: 'normal'
         });
 
         hiddenLinearOut.connectToLayer(softmax, {
@@ -108,6 +129,9 @@ var startDemo;
             type: 'fullyConnected',
             edgeType: 'activation'
         });
+
+
+        /*============ RENDER ============*/
 
         singleHiddenNetwork.render('#container');
     };

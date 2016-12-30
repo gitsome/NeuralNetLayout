@@ -1,3 +1,14 @@
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.node {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    fill: #333;
+}
+
 .node rect,
 .node circle,
 .node ellipse,

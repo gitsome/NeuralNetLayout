@@ -4,7 +4,7 @@
   "description": "Wrapping Dagre D3 with convenience methods for visualizing neural networks",
   "main": "index.js",
   "dependencies": {
-    "dagre-d3": "^0.4.17"
+    "dagre-d3-neural-network": "*"
   },
   "devDependencies": {},
   "scripts": {
@@ -15,7 +15,7 @@
     "url": "git+https://github.com/gitsome/NeuralNetLayout.git"
   },
   "author": "John David Martin",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/gitsome/NeuralNetLayout/issues"
   },

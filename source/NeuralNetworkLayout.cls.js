@@ -23,28 +23,6 @@ var NeuralNetworkLayout;
 
         var layers = [];
 
-        var customizeRenderer = function (render) {
-            render.arrows().hollowPoint = function normal(parent, id, edge, type) {
-              var marker = parent.append("marker")
-                .attr("id", id)
-                .attr("viewBox", "0 0 10 10")
-                .attr("refX", 9)
-                .attr("refY", 5)
-                .attr("markerUnits", "strokeWidth")
-                .attr("markerWidth", 6)
-                .attr("markerHeight", 4)
-                .attr("orient", "auto");
-
-              var path = marker.append("path")
-                .attr("d", "M 0 0 L 10 5 L 0 10 z")
-                .style("stroke-width", 1)
-                .style("stroke-dasharray", "1,0")
-                .style("fill", "#fff")
-                .style("stroke", "#333");
-              dagreD3.util.applyStyle(path, edge[type + "Style"]);
-            };
-        };
-
 
         /*============ PUBLIC PROPERTIES AND METHODS ============*/
 
@@ -58,9 +36,6 @@ var NeuralNetworkLayout;
 
             // Create the renderer
             var render = new dagreD3.render();
-
-            // Customize the renderer
-            customizeRenderer(render);
 
             // Set up an SVG group so that we can translate the final graph.
             var svg = d3.select(svgElementSelector),
@@ -86,13 +61,9 @@ var NeuralNetworkLayout;
 
         /*============ INITIALIZATION ============*/
 
-
-
-
     };
 
 
     /*============ PUBLIC STATIC VARIABLES/METHODS ============*/
-
 
 })();

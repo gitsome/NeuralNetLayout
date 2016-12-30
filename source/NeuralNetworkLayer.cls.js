@@ -6,6 +6,7 @@ var NeuralNetworkLayer;
     /*============ PRIVATE STATIC VARIABLES/METHODS ============*/
 
     var layerId = 0;
+    var layerIdMap = {};
 
     var sortRank = 0;
     var getNextSortRank = function () {
@@ -20,7 +21,7 @@ var NeuralNetworkLayer;
 
         var that = this;
 
-        if (that.type === 'input' || that.type === 'oupute') {
+        if (that.type === 'input' || that.type === 'output') {
             return "stroke: #5cb85c;";
         } else {
             return "";
@@ -38,7 +39,9 @@ var NeuralNetworkLayer;
         var defaults = {
             id: getNextLayerId(),
             type: 'node',
-            nodes: 1
+            nodes: 1,
+            sameRankAs: false,
+            label: false
         };
         _.extend(that, defaults, configs);
 
@@ -46,13 +49,27 @@ var NeuralNetworkLayer;
             throw new Error('NeuralNetworkLayer.connectToLayer.initializedWithNoNodes');
         }
 
+        layerIdMap[that.id] = {layer: that, firstNodId: false};
+
 
         /*============ PRIVATE VARIABLES METHODS ============*/
 
         var layerTypeShapeMap = {
             'activation': 'rect',
             'input': 'diamond',
-            'output': 'diamond'
+            'output': 'diamond',
+            'bias': 'ellipse'
+        };
+
+        var layerStyleMap = {
+            'activation': 'stroke: #f0ad4e; stroke-width: 2px;',
+            'input': 'stroke: #666; stroke-width: 1px;',
+            'output': 'stroke: #666; stroke-width: 1px;',
+            'bias': 'stroke: #337ab7; stroke-width: 2px; fill: #d6ecff;'
+        };
+
+        var layerTypeLabelStyleMap = {
+            'activation': 'stroke: #90744c; font-size: 12px;'
         };
 
         var getNodeId = function (ind) {
@@ -63,12 +80,34 @@ var NeuralNetworkLayer;
 
             var layerRank = getNextSortRank();
 
+            var firstNodeId = false;
+            var nodeId;
+            var sameRankAs;
+
             for (var i=0; i < that.nodes; i++) {
-                graph.setNode(getNodeId(i), {
-                    label: " ",
+
+                nodeId = getNodeId(i);
+
+                if (firstNodeId === false) {
+                    firstNodeId = nodeId;
+                    layerIdMap[that.id].firstNodeId = firstNodeId;
+                }
+
+                sameRankAs = firstNodeId;
+                if (that.sameRankAs !== false) {
+                    sameRankAs = layerIdMap[that.sameRankAs].firstNodeId;
+                }
+
+                graph.setNode(nodeId, {
+                    label: that.label ? that.label : "",
+                    labelStyle: layerTypeLabelStyleMap[that.type] ? layerTypeLabelStyleMap[that.type] : '',
                     shape: layerTypeShapeMap[that.type] ? layerTypeShapeMap[that.type] : "circle",
                     getNodeStyle: getNodeStyle.call(that),
-                    sortRank: layerRank
+                    style: layerStyleMap[that.type],
+                    sortRank: layerRank,
+                    sameRankAs: sameRankAs,
+                    width: that.type === 'bias' ? 6 : 20,
+                    height: that.type === 'bias' ? 6 : 20
                 });
             }
         };
@@ -80,10 +119,15 @@ var NeuralNetworkLayer;
         };
 
         var edgeStyleMap = {
-            'activation': 'stroke: #f0ad4e; stroke-width: 2px; fill:none;',
-            'weighted': 'stroke: #5cb85c; stroke-width: 2px; fill:none;',
-            'normal': 'stroke: #333; stroke-width: 1px; fill:none;',
-            'passThrough': 'stroke: #666; stroke-width: 2px; stroke-dasharray: 5, 5; fill:none;'
+            'activation': 'stroke: #f0ad4e; stroke-width: 2.5px; fill:none;',
+            'weighted': 'stroke: #5cb85c; stroke-width: 2.5px; fill:none;',
+            'normal': 'stroke: #888; stroke-width: 2px; stroke-dasharray: 12, 4; fill:none;',
+            'passThrough': 'stroke: #888; stroke-width: 2px; stroke-dasharray: 12, 4; fill:none;',
+            'bias': 'stroke: #337ab7; stroke-width: 2px; stroke-dasharray: 3, 3; fill:none;'
+        };
+
+        var connectTypeLabelStyleMap = {
+            'activation': 'stroke: #90744c;'
         };
 
         var getStyle = function (edgeStyle) {
@@ -100,7 +144,9 @@ var NeuralNetworkLayer;
             var defaultConnectionConfigs = {
                 type: 'fullyConnected',
                 edgeType: 'normal',
-                color: '#444'
+                lineInterpolate: 'basis',
+                color: '#444',
+                label: ''
             };
             var connectConfigs = _.extend({}, defaultConnectionConfigs, configs_in);
 
@@ -119,8 +165,11 @@ var NeuralNetworkLayer;
                         arrowhead: 'normal',
                         arrowheadStyle: "stroke-width:1px; stroke: #333; fill:#333;",
                         style: getStyle(connectConfigs.edgeType),
-                        lineInterpolate: 'basis',
-                        sortRank: layerRank
+                        lineInterpolate: connectConfigs.lineInterpolate,
+                        sortRank: layerRank,
+                        label: connectConfigs.label ? connectConfigs.label : "",
+                        labelStyle: connectTypeLabelStyleMap[connectConfigs.edgeType] ? connectTypeLabelStyleMap[connectConfigs.edgeType] : '',
+                        labelpos: 'c'
                     });
                 }
 
@@ -133,8 +182,11 @@ var NeuralNetworkLayer;
                             arrowhead: 'normal',
                             arrowheadStyle: "stroke-width:1px; stroke: #333; fill:#333;",
                             style: getStyle(connectConfigs.edgeType),
-                            lineInterpolate: 'basis',
-                            sortRank: layerRank
+                            lineInterpolate: connectConfigs.lineInterpolate,
+                            sortRank: layerRank,
+                            label: connectConfigs.label ? connectConfigs.label : "",
+                            labelStyle: connectTypeLabelStyleMap[connectConfigs.edgeType] ? connectTypeLabelStyleMap[connectConfigs.edgeType] : '',
+                            labelpos: 'c'
                         });
                     }
                 }
@@ -145,7 +197,6 @@ var NeuralNetworkLayer;
         };
 
 
-
         /*============ INITIALIZATION ============*/
 
         initialize();
@@ -153,6 +204,5 @@ var NeuralNetworkLayer;
 
 
     /*============ PUBLIC STATIC VARIABLES/METHODS ============*/
-
 
 })();

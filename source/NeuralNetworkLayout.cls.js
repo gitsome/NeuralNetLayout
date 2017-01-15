@@ -54,7 +54,7 @@ var NeuralNetworkLayout;
             // Center the graph
             var xCenterOffset = (svg.attr("width") - graph.graph().width) / 2;
             inner.attr("transform", "translate(" + xCenterOffset + ", 20)");
-            svg.attr("height", graph.graph().height + 40);
+            //svg.attr("height", graph.graph().height + 40);
         };
 
 
